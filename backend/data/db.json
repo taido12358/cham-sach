@@ -1,0 +1,310 @@
+{
+  "users": [
+    {
+      "_id": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "name": "Cô Hạnh",
+      "email": "admin@daiphuc.edu.vn",
+      "password": "$2a$10$xccnplRgfUUI8Jz.gwIV4eTquyG76pLq9zx/M9Q2SVQ7VtLHJn1RC",
+      "role": "admin",
+      "className": "GV",
+      "avatar": "",
+      "bio": "Giáo viên chủ nhiệm CLB Sách",
+      "stats": {
+        "booksRead": 0,
+        "reviewsWritten": 0,
+        "xp": 0,
+        "level": 1,
+        "streak": 0,
+        "lastCheckin": null
+      },
+      "badges": [],
+      "savedBooks": [],
+      "createdAt": "2026-04-18T16:44:05.253Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "97e53b4d-989e-45d7-8cd8-f224a305fdc7",
+      "name": "Nguyễn Minh Anh",
+      "email": "minhanh@student.edu.vn",
+      "password": "$2a$10$sUPZ3HKIaHUY8yT9B7dijermWGqdKgXpGvrJO4XfN22CCVxKfgn5C",
+      "role": "student",
+      "className": "8A",
+      "avatar": "",
+      "bio": "",
+      "stats": {
+        "booksRead": 8,
+        "reviewsWritten": 4,
+        "xp": 820,
+        "level": 4,
+        "streak": 12,
+        "lastCheckin": "2026-04-18T16:44:05.254Z"
+      },
+      "badges": [
+        {
+          "name": "Bạn đồng hành",
+          "earnedAt": "2026-04-18T16:44:05.254Z"
+        }
+      ],
+      "savedBooks": [
+        "7eb76e51-01c5-45f6-b746-b1cd5656425d"
+      ],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:47:15.048Z"
+    },
+    {
+      "_id": "8a3b4531-3c13-4239-b5e8-977c2c5cc659",
+      "name": "Trần Hoàng Long",
+      "email": "hoanglong@student.edu.vn",
+      "password": "$2a$10$sUPZ3HKIaHUY8yT9B7dijermWGqdKgXpGvrJO4XfN22CCVxKfgn5C",
+      "role": "student",
+      "className": "9B",
+      "avatar": "",
+      "bio": "",
+      "stats": {
+        "booksRead": 6,
+        "reviewsWritten": 3,
+        "xp": 680,
+        "level": 3,
+        "streak": 7,
+        "lastCheckin": "2026-04-18T16:44:05.254Z"
+      },
+      "badges": [
+        {
+          "name": "Bạn đồng hành",
+          "earnedAt": "2026-04-18T16:44:05.254Z"
+        }
+      ],
+      "savedBooks": [],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "e56a01b2-1bf7-49af-aa08-be7e3924862e",
+      "name": "Phạm Bảo Hân",
+      "email": "baohan@student.edu.vn",
+      "password": "$2a$10$sUPZ3HKIaHUY8yT9B7dijermWGqdKgXpGvrJO4XfN22CCVxKfgn5C",
+      "role": "student",
+      "className": "7C",
+      "avatar": "",
+      "bio": "",
+      "stats": {
+        "booksRead": 5,
+        "reviewsWritten": 3,
+        "xp": 620,
+        "level": 3,
+        "streak": 5,
+        "lastCheckin": "2026-04-18T16:44:05.254Z"
+      },
+      "badges": [],
+      "savedBooks": [],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    }
+  ],
+  "books": [
+    {
+      "_id": "7eb76e51-01c5-45f6-b746-b1cd5656425d",
+      "title": "Dế Mèn Phiêu Lưu Ký",
+      "author": "Tô Hoài",
+      "category": "literature",
+      "coverColor": "#1F3A2D",
+      "summary": "Dế Mèn Phiêu Lưu Ký là câu chuyện về chú dế trẻ tuổi kiêu ngạo, tự mãn, từng gây ra cái chết của Dế Choắt hàng xóm. Sau bi kịch ấy, Dế Mèn quyết định lên đường phiêu lưu, kết bạn với Dế Trũi, gặp gỡ nhiều loài vật, trải qua đủ thử thách và hiểm nguy. Qua mỗi chuyến đi, Dế Mèn trưởng thành hơn, bớt kiêu ngạo, biết thương yêu đồng loại và mơ về một thế giới hòa bình. Câu chuyện không chỉ là hành trình của một chú dế mà còn là ẩn dụ đẹp về sự trưởng thành, tình bạn và khát vọng hòa bình.",
+      "excerpt": "",
+      "tags": [
+        "thiếu nhi",
+        "phiêu lưu",
+        "trưởng thành"
+      ],
+      "featured": true,
+      "readCount": 150,
+      "ratingAvg": 4.8,
+      "ratingCount": 28,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:47:19.375Z"
+    },
+    {
+      "_id": "c43edef4-1e7e-4f24-ae75-c1cbabfef24b",
+      "title": "Nhật Ký Đặng Thùy Trâm",
+      "author": "Đặng Thùy Trâm",
+      "category": "history",
+      "coverColor": "#6B1F1F",
+      "summary": "Cuốn nhật ký được tìm thấy hơn 30 năm sau khi bác sĩ Đặng Thùy Trâm hy sinh tại chiến trường Quảng Ngãi năm 1970, khi chị mới 27 tuổi. Những trang nhật ký ghi lại cuộc sống của một nữ bác sĩ trẻ giữa bom đạn: công việc cứu chữa thương binh, tình yêu tuổi trẻ dang dở, nỗi nhớ gia đình, và niềm tin mãnh liệt vào lý tưởng. Đọc cuốn sách này, ta gặp một tâm hồn trong sáng và một thế hệ sẵn sàng hy sinh tất cả cho Tổ quốc.",
+      "excerpt": "",
+      "tags": [
+        "lịch sử",
+        "chiến tranh",
+        "hồi ký"
+      ],
+      "featured": true,
+      "readCount": 89,
+      "ratingAvg": 4.9,
+      "ratingCount": 15,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "5080dd36-1923-4927-9377-21b00847670e",
+      "title": "Hoàng Tử Bé",
+      "author": "Antoine de Saint-Exupéry",
+      "category": "children",
+      "coverColor": "#1E3A5F",
+      "summary": "Hoàng Tử Bé kể về cuộc gặp gỡ giữa một phi công bị rơi máy bay giữa sa mạc Sahara và một cậu bé đến từ tiểu hành tinh B-612. Qua những câu chuyện mà Hoàng Tử Bé kể về hành trình của mình, cuốn sách trở thành một ẩn dụ sâu sắc về tình yêu, sự mất mát, và cách người lớn đánh mất trí tưởng tượng. Câu nổi tiếng \"Điều cốt lõi là vô hình với đôi mắt\" đã trở thành châm ngôn cho nhiều thế hệ độc giả.",
+      "excerpt": "Điều cốt lõi là vô hình với đôi mắt. Người ta chỉ có thể nhìn thấy đúng đắn bằng trái tim.",
+      "tags": [
+        "triết lý",
+        "thiếu nhi",
+        "kinh điển"
+      ],
+      "featured": false,
+      "readCount": 178,
+      "ratingAvg": 4.9,
+      "ratingCount": 42,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "49b83049-bca1-4285-a425-8877564e6b4b",
+      "title": "Đắc Nhân Tâm",
+      "author": "Dale Carnegie",
+      "category": "skills",
+      "coverColor": "#2D3748",
+      "summary": "Đắc Nhân Tâm là một trong những cuốn sách bán chạy nhất mọi thời đại về kỹ năng giao tiếp và ứng xử. Dale Carnegie đúc kết những nguyên tắc cốt lõi để chinh phục lòng người: tránh phê phán gay gắt, thành thật khen ngợi, quan tâm đến người khác, luôn mỉm cười, ghi nhớ tên người, lắng nghe để người khác cảm thấy quan trọng.",
+      "excerpt": "",
+      "tags": [
+        "kỹ năng sống",
+        "giao tiếp"
+      ],
+      "featured": false,
+      "readCount": 203,
+      "ratingAvg": 4.6,
+      "ratingCount": 51,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "effb4fcd-1804-4c54-a8d4-dc8b279e4e92",
+      "title": "Cho Tôi Xin Một Vé Đi Tuổi Thơ",
+      "author": "Nguyễn Nhật Ánh",
+      "category": "literature",
+      "coverColor": "#8B6914",
+      "summary": "Qua lời kể của nhân vật cu Mùi, Nguyễn Nhật Ánh đưa người đọc trở về với tuổi thơ trong trẻo của lứa trẻ em những năm 70-80, với những trò chơi, nỗi sợ, niềm vui và cả những \"dự án\" kỳ cục. Mỗi chương là một lát cắt đáng yêu và cười ra nước mắt. Nhưng đằng sau tiếng cười là nỗi buồn mênh mông của người lớn khi nhận ra tuổi thơ đã mãi mãi trôi qua.",
+      "excerpt": "",
+      "tags": [
+        "tuổi thơ",
+        "hoài niệm"
+      ],
+      "featured": false,
+      "readCount": 256,
+      "ratingAvg": 4.7,
+      "ratingCount": 63,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "abe4d6a3-ffc3-4c58-840e-45bce501a123",
+      "title": "Tuổi Thơ Dữ Dội",
+      "author": "Phùng Quán",
+      "category": "history",
+      "coverColor": "#44403c",
+      "summary": "Tuổi Thơ Dữ Dội tái hiện cuộc đời của những em thiếu niên trinh sát trong đội Vệ Quốc Đoàn ở chiến trường Bình Trị Thiên thời kháng chiến chống Pháp. Các nhân vật là những cậu bé mới mười ba, mười bốn tuổi nhưng đã dấn thân vào cuộc chiến với tất cả tinh thần trong sáng và quyết liệt. Qua từng trang sách, Phùng Quán vừa kể chuyện chiến tranh vừa viết một bản tình ca về tuổi thơ.",
+      "excerpt": "",
+      "tags": [
+        "lịch sử",
+        "chiến tranh"
+      ],
+      "featured": false,
+      "readCount": 94,
+      "ratingAvg": 4.8,
+      "ratingCount": 21,
+      "legalLinks": [],
+      "addedBy": "ee8042ce-047c-45b4-9fe6-a0740b9781ff",
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    }
+  ],
+  "reviews": [
+    {
+      "_id": "46b81d48-e177-472c-9470-504ad8a22890",
+      "book": "7eb76e51-01c5-45f6-b746-b1cd5656425d",
+      "author": "97e53b4d-989e-45d7-8cd8-f224a305fdc7",
+      "title": "Một hành trình trưởng thành đáng nhớ",
+      "content": "Đọc xong mình mới hiểu tại sao sách này được đọc cả trăm năm vẫn hay. Dế Mèn từ một chú dế kiêu ngạo trưởng thành qua từng chuyến đi, và mỗi người bạn đồng hành đều dạy cậu một bài học. Mình thích nhất đoạn Dế Mèn gặp Dế Trũi — tình bạn ấy đẹp và thật. Cuốn sách cũng khiến mình ngẫm về sự khiêm tốn.",
+      "rating": 5,
+      "status": "approved",
+      "featured": false,
+      "reactions": {
+        "inspired": [
+          "8a3b4531-3c13-4239-b5e8-977c2c5cc659"
+        ],
+        "moved": [],
+        "thoughtful": [
+          "e56a01b2-1bf7-49af-aa08-be7e3924862e"
+        ],
+        "fun": []
+      },
+      "comments": [],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "313ccd00-5b91-470a-8325-f98daf8a5389",
+      "book": "c43edef4-1e7e-4f24-ae75-c1cbabfef24b",
+      "author": "8a3b4531-3c13-4239-b5e8-977c2c5cc659",
+      "title": "Tuổi hai mươi bảy và những điều còn mãi",
+      "content": "Cuốn nhật ký làm mình khóc nhiều lần. Chị Trâm mới 27 tuổi khi hy sinh — bằng tuổi chị họ mình bây giờ. Mình trân trọng hơn mỗi ngày đang sống, và biết ơn những người đã viết nên hòa bình. Những trang chị viết về đồng đội, về gia đình, về lý tưởng khiến mình thấy bản thân cần sống có ích hơn.",
+      "rating": 5,
+      "status": "approved",
+      "featured": true,
+      "reactions": {
+        "inspired": [
+          "97e53b4d-989e-45d7-8cd8-f224a305fdc7",
+          "e56a01b2-1bf7-49af-aa08-be7e3924862e"
+        ],
+        "moved": [
+          "97e53b4d-989e-45d7-8cd8-f224a305fdc7",
+          "e56a01b2-1bf7-49af-aa08-be7e3924862e"
+        ],
+        "thoughtful": [
+          "97e53b4d-989e-45d7-8cd8-f224a305fdc7"
+        ],
+        "fun": []
+      },
+      "comments": [],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:44:05.254Z"
+    },
+    {
+      "_id": "4d6fbf0a-3e0d-4995-9f09-55f825c32f7e",
+      "book": "5080dd36-1923-4927-9377-21b00847670e",
+      "author": "e56a01b2-1bf7-49af-aa08-be7e3924862e",
+      "title": "Sách mỏng mà nhiều điều cần ngẫm",
+      "content": "\"Điều cốt lõi là vô hình với đôi mắt\" — câu này mình đọc xong ngồi ngẫm cả buổi. Sách mỏng nhưng chứa nhiều điều người lớn cũng cần học. Mình đặc biệt thích đoạn con cáo dạy Hoàng Tử Bé về việc \"thuần hóa\" nhau — hóa ra tình bạn cũng cần thời gian và sự kiên nhẫn.",
+      "rating": 5,
+      "status": "approved",
+      "featured": false,
+      "reactions": {
+        "inspired": [
+          "97e53b4d-989e-45d7-8cd8-f224a305fdc7"
+        ],
+        "moved": [],
+        "thoughtful": [
+          "8a3b4531-3c13-4239-b5e8-977c2c5cc659"
+        ],
+        "fun": []
+      },
+      "comments": [],
+      "createdAt": "2026-04-18T16:44:05.254Z",
+      "updatedAt": "2026-04-18T16:47:30.572Z"
+    }
+  ]
+}
