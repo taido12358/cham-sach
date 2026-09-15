@@ -1,6 +1,6 @@
 import express from 'express';
 import { db } from '../config/db.js';
-import { protect } from '../middleware/auth.js';
+import { protect, optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -41,7 +41,7 @@ router.get('/leaderboard', (req, res, next) => {
 });
 
 // GET /api/users/:id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', optionalAuth, (req, res, next) => {
   try {
     const user = db.collection('users').findById(req.params.id);
     if (!user) return res.status(404).json({ error: 'Không tìm thấy user' });
@@ -52,10 +52,11 @@ router.get('/:id', (req, res, next) => {
       return b ? { _id: b._id, title: b.title, author: b.author, coverColor: b.coverColor, category: b.category } : null;
     }).filter(Boolean);
 
-    // Tất cả reviews của user (approved + pending + rejected)
-    // User xem được bài pending của chính mình
+    // Reviews của user: khách chỉ thấy bài đã duyệt, chủ tài khoản / admin / ctv thấy cả pending & rejected
+    const canSeeAll = req.user && (req.user._id === req.params.id || ['admin', 'ctv'].includes(req.user.role));
     const reviews = db.collection('reviews')
       .find({ author: req.params.id })
+      .filter(r => canSeeAll || r.status === 'approved')
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 20)
       .map(r => {
