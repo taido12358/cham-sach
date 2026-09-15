@@ -39,7 +39,7 @@ export default function Register() {
           <div style={{ width: 56, height: 56, borderRadius: 2, background: 'var(--amber)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
             <BookMarked size={28} color="var(--forest)" />
           </div>
-          <h1 className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>
+          <h1 className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>
             Tham gia CLB
           </h1>
           <p style={{ color: 'var(--sage)' }}>Bắt đầu hành trình đọc sách của bạn</p>
@@ -78,7 +78,7 @@ export default function Register() {
         </form>
 
         <div style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: 'var(--sage)' }}>
-          Đã có tài khoản? <Link to="/dang-nhap" style={{ color: 'var(--forest)', fontWeight: 500, textDecoration: 'underline' }}>Đăng nhập</Link>
+          Đã có tài khoản? <Link to="/dang-nhap" style={{ color: 'var(--heading)', fontWeight: 500, textDecoration: 'underline' }}>Đăng nhập</Link>
         </div>
       </div>
     </div>

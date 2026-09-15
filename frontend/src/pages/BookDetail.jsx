@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Star, Users, Bookmark, ChevronLeft, Edit3, ExternalLink } from 'lucide-react';
+import { Star, Users, Bookmark, ChevronLeft, Edit3, ExternalLink, MessageCircle } from 'lucide-react';
 import api, { handleError } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import BookCard from '../components/BookCard';
 
 const categoryLabels = {
   literature: 'Văn học',
@@ -14,13 +16,23 @@ const categoryLabels = {
 export default function BookDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [bookmarked, setBookmarked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [related, setRelated] = useState([]);
+
+  const [commentsOpen, setCommentsOpen] = useState({});
+  const [commentsCache, setCommentsCache] = useState({});
+  const [commentsLoading, setCommentsLoading] = useState({});
+  const [draft, setDraft] = useState({});
+  const [posting, setPosting] = useState({});
 
   useEffect(() => {
+    setLoading(true);
+    setRelated([]);
     Promise.all([
       api.get(`/books/${id}`),
       api.get(`/reviews?book=${id}&limit=10`)
@@ -28,6 +40,13 @@ export default function BookDetail() {
       setBook(bookRes.data.book);
       setBookmarked(bookRes.data.isBookmarked);
       setReviews(reviewsRes.data.reviews);
+
+      const category = bookRes.data.book?.category;
+      if (category) {
+        api.get(`/books?category=${category}&limit=5`)
+          .then(res => setRelated((res.data.books || []).filter(b => b._id !== id).slice(0, 4)))
+          .catch(() => setRelated([]));
+      }
     }).catch(err => setError(handleError(err))).finally(() => setLoading(false));
   }, [id]);
 
@@ -36,8 +55,44 @@ export default function BookDetail() {
     try {
       const res = await api.post(`/books/${id}/bookmark`);
       setBookmarked(res.data.bookmarked);
+      toast.success(res.data.bookmarked ? 'Đã lưu sách' : 'Đã bỏ lưu sách');
     } catch (err) {
-      console.error(err);
+      toast.error(handleError(err));
+    }
+  };
+
+  const toggleComments = async (reviewId) => {
+    const willOpen = !commentsOpen[reviewId];
+    setCommentsOpen(prev => ({ ...prev, [reviewId]: willOpen }));
+    if (willOpen && !commentsCache[reviewId]) {
+      setCommentsLoading(prev => ({ ...prev, [reviewId]: true }));
+      try {
+        const res = await api.get(`/reviews/${reviewId}`);
+        setCommentsCache(prev => ({ ...prev, [reviewId]: res.data.comments || [] }));
+      } catch (err) {
+        toast.error(handleError(err));
+      } finally {
+        setCommentsLoading(prev => ({ ...prev, [reviewId]: false }));
+      }
+    }
+  };
+
+  const postComment = async (reviewId) => {
+    const content = (draft[reviewId] || '').trim();
+    if (!content) return;
+    setPosting(prev => ({ ...prev, [reviewId]: true }));
+    try {
+      const res = await api.post(`/reviews/${reviewId}/comments`, { content });
+      setCommentsCache(prev => ({ ...prev, [reviewId]: [...(prev[reviewId] || []), res.data] }));
+      setReviews(prev => prev.map(r =>
+        r._id === reviewId ? { ...r, comments: [...(r.comments || []), res.data] } : r
+      ));
+      setDraft(prev => ({ ...prev, [reviewId]: '' }));
+      toast.success('Đã đăng bình luận');
+    } catch (err) {
+      toast.error(handleError(err));
+    } finally {
+      setPosting(prev => ({ ...prev, [reviewId]: false }));
     }
   };
 
@@ -79,7 +134,7 @@ export default function BookDetail() {
           {/* Info */}
           <div>
             <div className="eyebrow">{categoryLabels[book.category]}</div>
-            <h1 className="serif" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, color: 'var(--forest)', lineHeight: 1.05, marginBottom: 12, letterSpacing: '-0.02em' }}>
+            <h1 className="serif" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, color: 'var(--heading)', lineHeight: 1.05, marginBottom: 12, letterSpacing: '-0.02em' }}>
               {book.title}
             </h1>
             <div className="serif" style={{ fontSize: 20, fontStyle: 'italic', color: 'var(--sage)', marginBottom: 24 }}>
@@ -102,8 +157,8 @@ export default function BookDetail() {
                 <Edit3 size={18} /> Viết cảm nhận
               </Link>
               {user && (
-                <button onClick={toggleBookmark} className="btn btn-outline btn-lg">
-                  <Bookmark size={18} fill={bookmarked ? 'var(--forest)' : 'none'} />
+                <button onClick={toggleBookmark} className="btn btn-outline btn-lg" aria-label={bookmarked ? 'Bỏ lưu sách' : 'Lưu sách'}>
+                  <Bookmark size={18} fill={bookmarked ? 'var(--heading)' : 'none'} />
                   {bookmarked ? 'Đã lưu' : 'Lưu sách'}
                 </button>
               )}
@@ -147,7 +202,7 @@ export default function BookDetail() {
                 {book.tags.map(tag => (
                   <span key={tag} style={{
                     padding: '4px 12px', borderRadius: 999, fontSize: 12,
-                    background: 'var(--cream)', color: 'var(--forest)', border: '1px solid var(--border)'
+                    background: 'var(--cream)', color: 'var(--heading)', border: '1px solid var(--border)'
                   }}>#{tag}</span>
                 ))}
               </div>
@@ -171,37 +226,108 @@ export default function BookDetail() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {reviews.map(r => (
-              <div key={r._id} className="card">
-                <div style={{ display: 'flex', gap: 14, marginBottom: 14 }}>
-                  <div className="serif" style={{
-                    width: 44, height: 44, borderRadius: 999,
-                    background: 'var(--forest)', color: 'var(--cream)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontWeight: 700, fontSize: 13
-                  }}>
-                    {r.author?.name?.split(' ').slice(-1)[0][0] || '?'}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--forest)' }}>{r.author?.name}</div>
-                    <div style={{ fontSize: 12, color: 'var(--sage)' }}>
-                      {r.author?.className && `Lớp ${r.author.className} · `}
-                      {new Date(r.createdAt).toLocaleDateString('vi-VN')}
+            {reviews.map(r => {
+              const isOpen = !!commentsOpen[r._id];
+              const comments = commentsCache[r._id];
+              const commentCount = comments ? comments.length : (r.comments?.length || 0);
+              return (
+                <div key={r._id} className="card">
+                  <div style={{ display: 'flex', gap: 14, marginBottom: 14 }}>
+                    <div className="serif" style={{
+                      width: 44, height: 44, borderRadius: 999,
+                      background: 'var(--forest)', color: 'var(--on-brand)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontWeight: 700, fontSize: 13
+                    }}>
+                      {r.author?.name?.split(' ').slice(-1)[0][0] || '?'}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, color: 'var(--heading)' }}>{r.author?.name}</div>
+                      <div style={{ fontSize: 12, color: 'var(--sage)' }}>
+                        {r.author?.className && `Lớp ${r.author.className} · `}
+                        {new Date(r.createdAt).toLocaleDateString('vi-VN')}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      {[1,2,3,4,5].map(i => (
+                        <Star key={i} size={14} fill={i <= r.rating ? 'var(--amber)' : 'none'} color="var(--amber)" />
+                      ))}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    {[1,2,3,4,5].map(i => (
-                      <Star key={i} size={14} fill={i <= r.rating ? 'var(--amber)' : 'none'} color="var(--amber)" />
-                    ))}
-                  </div>
+                  <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>{r.title}</h3>
+                  <p className="serif" style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--ink)', marginBottom: 16 }}>{r.content}</p>
+
+                  <button onClick={() => toggleComments(r._id)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--sage)', paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                    <MessageCircle size={14} /> {isOpen ? 'Ẩn bình luận' : `Xem bình luận (${commentCount})`}
+                  </button>
+
+                  {isOpen && (
+                    <div style={{ marginTop: 14 }}>
+                      {commentsLoading[r._id] ? (
+                        <div style={{ fontSize: 13, color: 'var(--sage)' }}>Đang tải bình luận…</div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 14 }}>
+                          {(comments || []).length === 0 ? (
+                            <div style={{ fontSize: 13, color: 'var(--sage)' }}>Chưa có bình luận nào.</div>
+                          ) : (
+                            comments.map(c => (
+                              <div key={c._id} style={{ display: 'flex', gap: 10 }}>
+                                <div className="serif" style={{
+                                  width: 28, height: 28, borderRadius: 999,
+                                  background: 'var(--forest)', color: 'var(--on-brand)',
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  fontWeight: 700, fontSize: 10, flexShrink: 0
+                                }}>
+                                  {c.author?.name?.split(' ').slice(-1)[0]?.[0] || '?'}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--heading)' }}>{c.author?.name}</span>
+                                    <span style={{ fontSize: 11, color: 'var(--sage)' }}>{new Date(c.createdAt).toLocaleDateString('vi-VN')}</span>
+                                  </div>
+                                  <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--ink)' }}>{c.content}</div>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+                      {user ? (
+                        <div style={{ display: 'flex', gap: 10 }}>
+                          <textarea className="form-textarea" style={{ minHeight: 52, flex: 1 }}
+                            placeholder="Viết bình luận…"
+                            value={draft[r._id] || ''}
+                            onChange={(e) => setDraft(prev => ({ ...prev, [r._id]: e.target.value }))} />
+                          <button className="btn btn-primary" disabled={posting[r._id] || !(draft[r._id] || '').trim()}
+                            onClick={() => postComment(r._id)}>
+                            {posting[r._id] ? '…' : 'Gửi'}
+                          </button>
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 13, color: 'var(--sage)' }}>
+                          <Link to="/dang-nhap" style={{ textDecoration: 'underline' }}>Đăng nhập</Link> để bình luận.
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>{r.title}</h3>
-                <p className="serif" style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--ink)' }}>{r.content}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
+
+      {/* Related books */}
+      {related.length > 0 && (
+        <section className="container" style={{ padding: '0 24px 80px' }}>
+          <div className="eyebrow">Có thể bạn thích</div>
+          <h2 className="h-section" style={{ marginBottom: 32 }}>Sách cùng thể loại</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 24 }}>
+            {related.map(b => <BookCard key={b._id} book={b} />)}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

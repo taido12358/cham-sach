@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Flame, Award, BookOpen, Edit3, Trophy } from 'lucide-react';
-import api from '../api/client';
+import { Flame, Award, BookOpen, Edit3, Trophy, Pencil } from 'lucide-react';
+import api, { handleError } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import BookCard from '../components/BookCard';
 
 export default function Profile() {
   const { id } = useParams();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, refresh } = useAuth();
+  const { toast } = useToast();
   const [profileData, setProfileData] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('reviews');
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({ name: '', className: '', bio: '' });
+  const [saving, setSaving] = useState(false);
 
   const viewingSelf = !id || id === currentUser?.id;
   const userId = id || currentUser?.id;
@@ -21,8 +26,31 @@ export default function Profile() {
     api.get(`/users/${userId}`).then(res => {
       setProfileData(res.data.user);
       setReviews(res.data.reviews || []);
+      setForm({
+        name: res.data.user.name || '',
+        className: res.data.user.className || '',
+        bio: res.data.user.bio || ''
+      });
     }).catch(console.error).finally(() => setLoading(false));
   }, [userId]);
+
+  const submitEdit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await api.patch('/users/me', form);
+      await refresh();
+      const res = await api.get(`/users/${userId}`);
+      setProfileData(res.data.user);
+      setReviews(res.data.reviews || []);
+      setEditing(false);
+      toast.success('Đã cập nhật hồ sơ');
+    } catch (err) {
+      toast.error(handleError(err));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) return <div className="container" style={{ padding: 80 }}>Đang tải…</div>;
   if (!profileData) return <div className="container" style={{ padding: 80 }}>Không tìm thấy user</div>;
@@ -32,7 +60,7 @@ export default function Profile() {
   return (
     <div>
       {/* Hero */}
-      <section style={{ padding: '64px 0', background: 'var(--forest)', color: 'var(--cream)' }}>
+      <section style={{ padding: '64px 0', background: 'var(--forest)', color: 'var(--on-brand)' }}>
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 32, alignItems: 'center' }}>
           <div className="serif" style={{
             width: 120, height: 120, borderRadius: 999,
@@ -42,8 +70,16 @@ export default function Profile() {
           }}>{initials}</div>
 
           <div>
-            <div className="eyebrow" style={{ color: 'var(--amber)' }}>
-              {profileData.className && `Lớp ${profileData.className}`} · Cấp {profileData.stats?.level || 1}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+              <div className="eyebrow" style={{ color: 'var(--amber)', marginBottom: 0 }}>
+                {profileData.className && `Lớp ${profileData.className}`} · Cấp {profileData.stats?.level || 1}
+              </div>
+              {viewingSelf && !editing && (
+                <button onClick={() => setEditing(true)} className="btn btn-outline"
+                  style={{ borderColor: 'var(--on-brand)', color: 'var(--on-brand)', padding: '8px 16px' }}>
+                  <Pencil size={14} /> Chỉnh sửa hồ sơ
+                </button>
+              )}
             </div>
             <h1 className="serif" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, marginBottom: 12 }}>
               {profileData.name}
@@ -60,6 +96,32 @@ export default function Profile() {
         </div>
       </section>
 
+      {/* Edit form */}
+      {viewingSelf && editing && (
+        <section style={{ padding: '32px 0', background: 'var(--ivory)', borderBottom: '1px solid var(--border)' }}>
+          <div className="container" style={{ maxWidth: 560 }}>
+            <form onSubmit={submitEdit}>
+              <div className="form-group">
+                <label className="form-label">Họ và tên</label>
+                <input className="form-input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Lớp</label>
+                <input className="form-input" value={form.className} onChange={(e) => setForm({ ...form, className: e.target.value })} maxLength={10} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Giới thiệu bản thân</label>
+                <textarea className="form-textarea" style={{ minHeight: 100 }} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} maxLength={300} />
+              </div>
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? 'Đang lưu…' : 'Lưu thay đổi'}</button>
+                <button type="button" className="btn btn-outline" onClick={() => setEditing(false)}>Hủy</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      )}
+
       {/* Badges */}
       {profileData.badges?.length > 0 && (
         <section style={{ padding: '32px 0', background: 'var(--ivory)', borderBottom: '1px solid var(--border)' }}>
@@ -73,7 +135,7 @@ export default function Profile() {
                   display: 'flex', alignItems: 'center', gap: 8, fontSize: 13
                 }}>
                   <Award size={16} color="var(--amber)" />
-                  <span className="serif" style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--forest)' }}>{b.name}</span>
+                  <span className="serif" style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--heading)' }}>{b.name}</span>
                 </div>
               ))}
             </div>
@@ -91,8 +153,8 @@ export default function Profile() {
             <button key={t.id} onClick={() => setTab(t.id)}
               style={{
                 padding: '12px 0', fontSize: 15, fontWeight: 500,
-                color: tab === t.id ? 'var(--forest)' : 'var(--sage)',
-                borderBottom: tab === t.id ? '2px solid var(--forest)' : '2px solid transparent',
+                color: tab === t.id ? 'var(--heading)' : 'var(--sage)',
+                borderBottom: tab === t.id ? '2px solid var(--heading)' : '2px solid transparent',
                 marginBottom: -1
               }}>
               {t.label}
@@ -113,7 +175,7 @@ export default function Profile() {
                   <div style={{ fontSize: 12, color: 'var(--sage)', marginBottom: 6 }}>
                     Đọc "{r.book?.title}" · {new Date(r.createdAt).toLocaleDateString('vi-VN')}
                   </div>
-                  <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>{r.title}</h3>
+                  <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>{r.title}</h3>
                   <p className="serif" style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--gray-text)' }}>
                     {r.content.slice(0, 200)}{r.content.length > 200 ? '…' : ''}
                   </p>
