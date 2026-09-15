@@ -34,7 +34,9 @@ export default function BookCard({ book, onBookmark, bookmarked }) {
             {categoryLabels[book.category]}
           </span>
           {onBookmark && (
-            <button onClick={(e) => { e.preventDefault(); onBookmark(book._id); }} style={{ color: 'rgba(255,255,255,0.8)' }}>
+            <button onClick={(e) => { e.preventDefault(); onBookmark(book._id); }}
+              aria-label={bookmarked ? 'Bỏ lưu sách' : 'Lưu sách'}
+              style={{ color: 'rgba(255,255,255,0.8)' }}>
               <Bookmark size={18} fill={bookmarked ? 'currentColor' : 'none'} />
             </button>
           )}
@@ -56,7 +58,7 @@ export default function BookCard({ book, onBookmark, bookmarked }) {
       <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <Star size={14} fill="var(--amber)" color="var(--amber)" />
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--forest)' }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--heading)' }}>
             {book.ratingAvg?.toFixed(1) || '—'}
           </span>
         </div>

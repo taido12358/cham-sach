@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import StaffRoute from './components/StaffRoute';
 
 import Home from './pages/Home';
 import Library from './pages/Library';
@@ -11,6 +12,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Challenges from './pages/Challenges';
+import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -30,6 +32,11 @@ export default function App() {
           <Route path="/viet-cam-nhan/:bookId?" element={<WriteReview />} />
           <Route path="/ho-so" element={<Profile />} />
           <Route path="/ho-so/:id" element={<Profile />} />
+        </Route>
+
+        {/* Routes cần quyền admin/ctv */}
+        <Route element={<StaffRoute />}>
+          <Route path="/quan-tri" element={<Admin />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
