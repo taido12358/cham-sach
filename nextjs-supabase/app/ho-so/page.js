@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Flame, BookOpen, Edit3, Trophy, Award } from 'lucide-react';
 import { createClient } from '../../lib/supabase-server';
+import EditProfileForm from './edit-profile-form';
 
 export default async function Profile() {
   const supabase = createClient();
@@ -20,7 +21,7 @@ export default async function Profile() {
 
   return (
     <div>
-      <section style={{ padding: '64px 0', background: 'var(--forest)', color: 'var(--cream)' }}>
+      <section style={{ padding: '64px 0', background: 'var(--forest)', color: 'var(--on-brand)' }}>
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 32, alignItems: 'center' }}>
           <div className="serif" style={{
             width: 120, height: 120, borderRadius: 999, background: 'var(--amber)', color: 'var(--forest)',
@@ -45,6 +46,10 @@ export default async function Profile() {
         </div>
       </section>
 
+      <section className="container" style={{ padding: '32px 24px 0' }}>
+        <EditProfileForm profile={profile} />
+      </section>
+
       {badges?.length > 0 && (
         <section style={{ padding: '32px 0', background: 'var(--ivory)', borderBottom: '1px solid var(--border)' }}>
           <div className="container">
@@ -57,7 +62,7 @@ export default async function Profile() {
                   display: 'flex', alignItems: 'center', gap: 8, fontSize: 13
                 }}>
                   <Award size={16} color="var(--amber)" />
-                  <span className="serif" style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--forest)' }}>{b.name}</span>
+                  <span className="serif" style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--heading)' }}>{b.name}</span>
                 </div>
               ))}
             </div>
@@ -75,7 +80,7 @@ export default async function Profile() {
               {pendingReviews.map(r => (
                 <div key={r.id} className="card" style={{ opacity: 0.7 }}>
                   <div style={{ fontSize: 12, color: 'var(--sage)', marginBottom: 4 }}>"{r.book?.title}"</div>
-                  <div className="serif" style={{ fontSize: 18, fontWeight: 600, color: 'var(--forest)' }}>{r.title}</div>
+                  <div className="serif" style={{ fontSize: 18, fontWeight: 600, color: 'var(--heading)' }}>{r.title}</div>
                 </div>
               ))}
             </div>
@@ -96,7 +101,7 @@ export default async function Profile() {
                 <div style={{ fontSize: 12, color: 'var(--sage)', marginBottom: 6 }}>
                   "{r.book?.title}" · {new Date(r.created_at).toLocaleDateString('vi-VN')}
                 </div>
-                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>{r.title}</h3>
+                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>{r.title}</h3>
                 <p className="serif" style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--gray-text)' }}>
                   {r.content.slice(0, 200)}{r.content.length > 200 ? '…' : ''}
                 </p>

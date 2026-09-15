@@ -34,9 +34,9 @@ export default function Login() {
       <div className="container" style={{ maxWidth: 480, padding: '64px 24px', width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{ width: 56, height: 56, borderRadius: 2, background: 'var(--forest)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-            <BookMarked size={28} color="var(--cream)" />
+            <BookMarked size={28} color="var(--on-brand)" />
           </div>
-          <h1 className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>
+          <h1 className="serif" style={{ fontSize: 36, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>
             Chào mừng trở lại
           </h1>
           <p style={{ color: 'var(--sage)' }}>Đăng nhập để tiếp tục hành trình</p>
@@ -61,7 +61,7 @@ export default function Login() {
         </form>
 
         <div style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: 'var(--sage)' }}>
-          Chưa có tài khoản? <Link href="/dang-ky" style={{ color: 'var(--forest)', fontWeight: 500, textDecoration: 'underline' }}>Tham gia CLB</Link>
+          Chưa có tài khoản? <Link href="/dang-ky" style={{ color: 'var(--heading)', fontWeight: 500, textDecoration: 'underline' }}>Tham gia CLB</Link>
         </div>
       </div>
     </div>

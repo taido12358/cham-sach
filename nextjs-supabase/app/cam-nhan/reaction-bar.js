@@ -47,7 +47,7 @@ export default function ReactionBar({ reviewId, reactions: initialReactions, cur
               padding: '6px 12px', borderRadius: 999,
               background: reacted ? 'rgba(200, 132, 28, 0.15)' : 'transparent',
               border: `1px solid ${reacted ? 'var(--amber)' : 'var(--border)'}`,
-              fontSize: 13, color: 'var(--forest)'
+              fontSize: 13, color: 'var(--heading)'
             }}>
             <span style={{ fontSize: 16 }}>{emoji}</span>
             {count > 0 && <span>{count}</span>}
