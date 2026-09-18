@@ -83,6 +83,9 @@ router.post('/', protect, authorize('admin', 'ctv'), (req, res, next) => {
 // PATCH /api/books/:id
 router.patch('/:id', protect, authorize('admin', 'ctv'), (req, res, next) => {
   try {
+    if (req.body.summary !== undefined && req.body.summary.length < 200) {
+      return res.status(400).json({ error: 'Tóm tắt phải dài ít nhất 200 ký tự' });
+    }
     const book = db.collection('books').update(req.params.id, req.body);
     if (!book) return res.status(404).json({ error: 'Không tìm thấy sách' });
     res.json(book);
