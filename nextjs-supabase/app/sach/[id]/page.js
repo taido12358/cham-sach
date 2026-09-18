@@ -19,7 +19,15 @@ export default async function BookDetail({ params }) {
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
 
-  const categoryLabel = { literature: 'Văn học', skills: 'Kỹ năng', history: 'Lịch sử', children: 'Thiếu nhi' }[book.category];
+  const { data: relatedBooks } = await supabase
+    .from('books')
+    .select('*')
+    .eq('category', book.category)
+    .neq('id', params.id)
+    .limit(4);
+
+  const categoryLabels = { literature: 'Văn học', skills: 'Kỹ năng', history: 'Lịch sử', children: 'Thiếu nhi' };
+  const categoryLabel = categoryLabels[book.category];
 
   return (
     <div>
@@ -50,7 +58,7 @@ export default async function BookDetail({ params }) {
 
           <div>
             <div className="eyebrow">{categoryLabel}</div>
-            <h1 className="serif" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, color: 'var(--forest)', lineHeight: 1.05, marginBottom: 12 }}>
+            <h1 className="serif" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, color: 'var(--heading)', lineHeight: 1.05, marginBottom: 12 }}>
               {book.title}
             </h1>
             <div className="serif" style={{ fontSize: 20, fontStyle: 'italic', color: 'var(--sage)', marginBottom: 24 }}>
@@ -99,13 +107,35 @@ export default async function BookDetail({ params }) {
                 <div style={{ fontSize: 13, color: 'var(--sage)', marginBottom: 8 }}>
                   {r.author?.name}{r.author?.class_name && `, Lớp ${r.author.class_name}`} · {new Date(r.created_at).toLocaleDateString('vi-VN')}
                 </div>
-                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--forest)', marginBottom: 8 }}>{r.title}</h3>
+                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>{r.title}</h3>
                 <p className="serif" style={{ fontSize: 16, lineHeight: 1.8 }}>{r.content}</p>
               </div>
             ))}
           </div>
         )}
       </section>
+
+      {relatedBooks?.length > 0 && (
+        <section className="container" style={{ padding: '0 24px 80px' }}>
+          <div className="eyebrow">Có thể bạn thích</div>
+          <h2 className="h-section" style={{ marginBottom: 32 }}>Sách cùng thể loại</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 20 }}>
+            {relatedBooks.map(rb => (
+              <Link key={rb.id} href={`/sach/${rb.id}`} className="book-hover" style={{ display: 'block' }}>
+                <div style={{
+                  aspectRatio: '3/4', borderRadius: 2, padding: 20,
+                  background: `linear-gradient(135deg, ${rb.cover_color} 0%, ${rb.cover_color}dd 100%)`,
+                  display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', color: 'white',
+                  boxShadow: '0 16px 32px -16px rgba(31, 58, 45, 0.25)'
+                }}>
+                  <div className="serif" style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.15, marginBottom: 4 }}>{rb.title}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75, fontStyle: 'italic' }}>— {rb.author}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

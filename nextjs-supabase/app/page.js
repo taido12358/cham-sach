@@ -25,11 +25,11 @@ export default async function Home() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
             <div style={{ height: 1, width: 48, background: 'var(--forest)' }} />
-            <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 500, color: 'var(--forest)' }}>
+            <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 500, color: 'var(--heading)' }}>
               Tháng 4 · Số 08
             </span>
           </div>
-          <h1 className="serif" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 700, lineHeight: 0.95, color: 'var(--forest)', letterSpacing: '-0.02em', marginBottom: 28 }}>
+          <h1 className="serif" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 700, lineHeight: 0.95, color: 'var(--heading)', letterSpacing: '-0.02em', marginBottom: 28 }}>
             Mỗi trang sách,<br/>
             <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>một thế giới</span>
           </h1>
@@ -53,7 +53,7 @@ export default async function Home() {
               <div className="eyebrow">01 — Thư viện</div>
               <h2 className="h-section">Sách đang đọc</h2>
             </div>
-            <Link href="/thu-vien" style={{ fontSize: 14, fontWeight: 500, color: 'var(--forest)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link href="/thu-vien" style={{ fontSize: 14, fontWeight: 500, color: 'var(--heading)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               Xem tất cả <ChevronRight size={14} />
             </Link>
           </div>
@@ -94,7 +94,7 @@ export default async function Home() {
                 <div style={{ fontSize: 12, color: 'var(--sage)', marginBottom: 8 }}>
                   {r.author?.name}{r.author?.class_name && `, Lớp ${r.author.class_name}`} · "{r.book?.title}"
                 </div>
-                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--forest)', marginBottom: 12 }}>{r.title}</h3>
+                <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 12 }}>{r.title}</h3>
                 <p className="serif" style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--ink)' }}>
                   "{r.content.slice(0, 150)}{r.content.length > 150 ? '…' : ''}"
                 </p>
@@ -108,11 +108,11 @@ export default async function Home() {
       <section style={{ padding: '96px 0', textAlign: 'center' }}>
         <div className="container" style={{ maxWidth: 800 }}>
           <div className="eyebrow">Góc tri thức</div>
-          <Quote size={48} color="var(--forest)" strokeWidth={1} style={{ margin: '0 auto 24px', opacity: 0.4 }} />
-          <blockquote className="serif" style={{ fontStyle: 'italic', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 500, lineHeight: 1.25, color: 'var(--forest)' }}>
+          <Quote size={48} color="var(--heading)" strokeWidth={1} style={{ margin: '0 auto 24px', opacity: 0.4 }} />
+          <blockquote className="serif" style={{ fontStyle: 'italic', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 500, lineHeight: 1.25, color: 'var(--heading)' }}>
             Sách mở ra trước mắt tôi những <span style={{ color: 'var(--amber)' }}>chân trời mới</span>, và đánh thức trong tôi những khao khát lớn lao.
           </blockquote>
-          <div style={{ marginTop: 20, fontSize: 14, color: 'var(--forest)', fontWeight: 500 }}>— Maxim Gorky</div>
+          <div style={{ marginTop: 20, fontSize: 14, color: 'var(--heading)', fontWeight: 500 }}>— Maxim Gorky</div>
         </div>
       </section>
     </div>

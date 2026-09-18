@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, User, LogOut } from 'lucide-react';
+import { ChevronDown, User, LogOut, ShieldCheck } from 'lucide-react';
 import { createClient } from '../lib/supabase-browser';
 
 export default function UserMenu({ profile }) {
@@ -27,17 +27,18 @@ export default function UserMenu({ profile }) {
   }
 
   const initials = profile.name?.split(' ').map(w => w[0]).slice(-2).join('').toUpperCase() || '?';
+  const isStaff = profile.role === 'admin' || profile.role === 'ctv';
 
   return (
     <div style={{ position: 'relative' }}>
-      <button onClick={() => setOpen(!open)} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <button onClick={() => setOpen(!open)} aria-label="Mở menu tài khoản" aria-expanded={open} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <div className="serif" style={{
           width: 40, height: 40, borderRadius: 999,
-          background: 'var(--forest)', color: 'var(--cream)',
+          background: 'var(--forest)', color: 'var(--on-brand)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontWeight: 700, fontSize: 13
         }}>{initials}</div>
-        <ChevronDown size={14} color="var(--forest)" />
+        <ChevronDown size={14} color="var(--heading)" />
       </button>
 
       {open && (
@@ -47,7 +48,7 @@ export default function UserMenu({ profile }) {
           boxShadow: '0 10px 30px -10px rgba(0,0,0,0.15)', overflow: 'hidden'
         }}>
           <div style={{ padding: 16, borderBottom: '1px solid var(--border)' }}>
-            <div style={{ fontWeight: 600, color: 'var(--forest)' }}>{profile.name}</div>
+            <div style={{ fontWeight: 600, color: 'var(--heading)' }}>{profile.name}</div>
             <div style={{ fontSize: 12, color: 'var(--sage)' }}>
               {profile.class_name && `Lớp ${profile.class_name} · `}Cấp {profile.level || 1}
             </div>
@@ -56,6 +57,12 @@ export default function UserMenu({ profile }) {
             style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', fontSize: 14 }}>
             <User size={16} /> Hồ sơ
           </Link>
+          {isStaff && (
+            <Link href="/quan-tri" onClick={() => setOpen(false)}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', fontSize: 14 }}>
+              <ShieldCheck size={16} /> Quản trị
+            </Link>
+          )}
           <button onClick={logout}
             style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', width: '100%', fontSize: 14, color: '#c00' }}>
             <LogOut size={16} /> Đăng xuất

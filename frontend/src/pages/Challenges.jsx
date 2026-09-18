@@ -33,7 +33,7 @@ export default function Challenges() {
   return (
     <div>
       {/* Challenge */}
-      <section style={{ padding: '80px 0', background: 'var(--forest)', color: 'var(--cream)' }}>
+      <section style={{ padding: '80px 0', background: 'var(--forest)', color: 'var(--on-brand)' }}>
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 48 }}>
           <div>
             <div className="eyebrow" style={{ color: 'var(--amber)' }}>Thử thách</div>

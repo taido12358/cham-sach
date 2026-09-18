@@ -1,7 +1,7 @@
 import express from 'express';
 import crypto from 'node:crypto';
 import { db } from '../config/db.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -29,12 +29,21 @@ const populateReview = (review) => {
 };
 
 // GET /api/reviews
-router.get('/', (req, res, next) => {
+router.get('/', optionalAuth, (req, res, next) => {
   try {
     const { status = 'approved', book, author, sort = '-createdAt', page = 1, limit = 10 } = req.query;
+    const isStaff = req.user && ['admin', 'ctv'].includes(req.user.role);
+    const isOwnAuthor = req.user && author && author === req.user._id;
+
+    // Chỉ approved là public. Các status khác (pending/rejected/all) chỉ admin/ctv
+    // hoặc chính tác giả (khi lọc theo author=chính mình) mới xem được.
+    if (status !== 'approved' && !isStaff && !isOwnAuthor) {
+      return res.status(403).json({ error: 'Bạn không có quyền xem các review này' });
+    }
+
     let reviews = db.collection('reviews').all();
 
-    reviews = reviews.filter(r => r.status === status);
+    if (status !== 'all') reviews = reviews.filter(r => r.status === status);
     if (book) reviews = reviews.filter(r => r.book === book);
     if (author) reviews = reviews.filter(r => r.author === author);
 

@@ -34,11 +34,11 @@ export default function Home() {
         <div className="fade-up">
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
             <div style={{ height: 1, width: 48, background: 'var(--forest)' }} />
-            <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 500, color: 'var(--forest)' }}>
+            <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 500, color: 'var(--heading)' }}>
               Tháng 4 · Số 08
             </span>
           </div>
-          <h1 className="serif" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 700, lineHeight: 0.95, color: 'var(--forest)', letterSpacing: '-0.02em', marginBottom: 28 }}>
+          <h1 className="serif" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 700, lineHeight: 0.95, color: 'var(--heading)', letterSpacing: '-0.02em', marginBottom: 28 }}>
             Mỗi trang sách,<br/>
             <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>một thế giới</span>
           </h1>
@@ -70,7 +70,7 @@ export default function Home() {
               <div className="eyebrow">01 — Thư viện</div>
               <h2 className="h-section">Sách đang đọc</h2>
             </div>
-            <Link to="/thu-vien" style={{ fontSize: 14, fontWeight: 500, color: 'var(--forest)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link to="/thu-vien" style={{ fontSize: 14, fontWeight: 500, color: 'var(--heading)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               Xem tất cả <ChevronRight size={14} />
             </Link>
           </div>
@@ -105,14 +105,14 @@ export default function Home() {
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 14 }}>
                   <div className="serif" style={{
                     width: 44, height: 44, borderRadius: 999,
-                    background: 'var(--forest)', color: 'var(--cream)',
+                    background: 'var(--forest)', color: 'var(--on-brand)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontWeight: 700, fontSize: 13, flexShrink: 0
                   }}>
                     {r.author?.name?.split(' ').map(w => w[0]).slice(-2).join('') || '?'}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--forest)' }}>{r.author?.name}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--heading)' }}>{r.author?.name}</div>
                     <div style={{ fontSize: 12, color: 'var(--sage)' }}>
                       {r.author?.className && `Lớp ${r.author.className} · `}Đọc "{r.book?.title}"
                     </div>
@@ -139,13 +139,13 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, opacity: 0.3, backgroundImage: 'radial-gradient(circle, rgba(31,58,45,0.12) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
         <div className="container" style={{ maxWidth: 800, textAlign: 'center', position: 'relative' }}>
           <div className="eyebrow">04 — Góc tri thức</div>
-          <Quote size={48} color="var(--forest)" strokeWidth={1} style={{ margin: '0 auto 24px', opacity: 0.4 }} />
-          <blockquote className="serif" style={{ fontStyle: 'italic', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 500, lineHeight: 1.25, marginBottom: 24, color: 'var(--forest)', letterSpacing: '-0.01em' }}>
+          <Quote size={48} color="var(--heading)" strokeWidth={1} style={{ margin: '0 auto 24px', opacity: 0.4 }} />
+          <blockquote className="serif" style={{ fontStyle: 'italic', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 500, lineHeight: 1.25, marginBottom: 24, color: 'var(--heading)', letterSpacing: '-0.01em' }}>
             Sách mở ra trước mắt tôi những <span style={{ color: 'var(--amber)' }}>chân trời mới</span>, và đánh thức trong tôi những khao khát lớn lao.
           </blockquote>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, fontSize: 14 }}>
             <div style={{ height: 1, width: 48, background: 'var(--forest)' }} />
-            <span style={{ color: 'var(--forest)', fontWeight: 500 }}>Maxim Gorky</span>
+            <span style={{ color: 'var(--heading)', fontWeight: 500 }}>Maxim Gorky</span>
             <div style={{ height: 1, width: 48, background: 'var(--forest)' }} />
           </div>
         </div>
@@ -164,7 +164,7 @@ function BookStack({ book, top, right, rotate, color, ink }) {
       transform: `rotate(${rotate}deg)`,
       padding: 24,
       display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-      color: ink ? 'var(--forest)' : 'white'
+      color: ink ? 'var(--heading)' : 'white'
     }}>
       <div style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', opacity: 0.6 }}>
         {book.featured ? 'Nổi bật' : 'Đang đọc'}
