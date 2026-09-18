@@ -2,15 +2,29 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Star, Users, ChevronLeft, Edit3 } from 'lucide-react';
 import { createClient } from '../../../lib/supabase-server';
+import BookmarkButton from './bookmark-button';
+import CommentsSection from '../../cam-nhan/comments-section';
 
 export default async function BookDetail({ params }) {
   const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const { data: book } = await supabase.from('books').select('*').eq('id', params.id).single();
   if (!book) notFound();
 
   // Tăng read count (fire-and-forget)
   supabase.from('books').update({ read_count: book.read_count + 1 }).eq('id', params.id).then();
+
+  let bookmarked = false;
+  if (user) {
+    const { data: existingBookmark } = await supabase
+      .from('bookmarks')
+      .select('book_id')
+      .eq('user_id', user.id)
+      .eq('book_id', params.id)
+      .maybeSingle();
+    bookmarked = !!existingBookmark;
+  }
 
   const { data: reviews } = await supabase
     .from('reviews')
@@ -75,9 +89,12 @@ export default async function BookDetail({ params }) {
               </div>
             </div>
 
-            <Link href={`/viet-cam-nhan?book=${book.id}`} className="btn btn-primary btn-lg">
-              <Edit3 size={18} /> Viết cảm nhận
-            </Link>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Link href={`/viet-cam-nhan?book=${book.id}`} className="btn btn-primary btn-lg">
+                <Edit3 size={18} /> Viết cảm nhận
+              </Link>
+              <BookmarkButton bookId={book.id} initialBookmarked={bookmarked} currentUserId={user?.id} />
+            </div>
 
             <section style={{ marginTop: 40, marginBottom: 32 }}>
               <div className="eyebrow">Tóm tắt</div>
@@ -109,6 +126,7 @@ export default async function BookDetail({ params }) {
                 </div>
                 <h3 className="serif" style={{ fontSize: 20, fontWeight: 700, color: 'var(--heading)', marginBottom: 8 }}>{r.title}</h3>
                 <p className="serif" style={{ fontSize: 16, lineHeight: 1.8 }}>{r.content}</p>
+                <CommentsSection reviewId={r.id} currentUserId={user?.id} />
               </div>
             ))}
           </div>

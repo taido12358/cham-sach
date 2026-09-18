@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, X } from 'lucide-react';
+import { Check, RotateCcw, X } from 'lucide-react';
 import { createClient } from '../../lib/supabase-browser';
 import { useToast } from '../toast-context';
 
-export default function ModerationActions({ reviewId }) {
+export default function ModerationActions({ reviewId, status }) {
   const router = useRouter();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
@@ -42,6 +42,16 @@ export default function ModerationActions({ reviewId }) {
     setNote('');
     router.refresh();
   };
+
+  if (status === 'rejected') {
+    return (
+      <div style={{ marginTop: 16 }}>
+        <button type="button" className="btn btn-primary" disabled={busy} onClick={approve}>
+          <RotateCcw size={16} /> Duyệt lại
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div style={{ marginTop: 16 }}>
